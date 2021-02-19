@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Video } from 'src/app/models/video';
 
 import { PagedList } from '../models/paged-list';
+import { Video } from '../models/video';
 import { YoutubeClient } from '../utils/youtube-client';
 
 import { AppConfigService } from './app-config.service';
@@ -23,6 +23,7 @@ interface YoutubeVideosListDto {
 })
 export class YoutubeVideosService {
   private readonly client: YoutubeClient;
+  private videoFields = 'id,contentDetails,snippet';
 
   constructor(
     private readonly appConfigService: AppConfigService,
@@ -32,42 +33,32 @@ export class YoutubeVideosService {
     this.client = new YoutubeClient(this.appConfigService.googleAPIKey, httpClient);
   }
 
-  public getTopList(pageId?: string): Observable<PagedList<Video>> {
+  public getTopList(pageSize: number = 10, pageId?: string): Observable<PagedList<Video>> {
     return this.client.get<YoutubeVideosListDto>('videos', {
-      maxResults: '5',
+      maxResults: pageSize,
+      part: this.videoFields,
       chart: 'mostPopular',
-      part: 'id,contentDetails,snippet',
-      ...(pageId ? { pageToken: pageId } : {}),
+      pageToken: pageId,
     }).pipe(
       map(response => {
         const items = response?.items.map(dto => this.youtubeVideoMapper.fromDto(dto));
-
         return {
-          pagination: {
-            nextPageToken: response?.nextPageToken,
-            prevPageToken: response?.prevPageToken,
-          },
+          prevPageToken: response?.prevPageToken,
+          nextPageToken: response?.nextPageToken,
           items,
         };
       }),
     );
   }
 
-  public getByIds(ids: string[], pageId?: string): Observable<PagedList<Video>> {
+  public getByIds(ids: string[]): Observable<PagedList<Video>> {
     return this.client.get<YoutubeVideosListDto>('videos', {
-      maxResults: '5',
       id: ids.join(','),
-      part: 'id,contentDetails,snippet',
-      ...(pageId ? { pageToken: pageId } : {}),
+      part: this.videoFields,
     }).pipe(
       map(response => {
         const items = response?.items.map(dto => this.youtubeVideoMapper.fromDto(dto));
-
         return {
-          pagination: {
-            nextPageToken: response?.nextPageToken,
-            prevPageToken: response?.prevPageToken,
-          },
           items,
         };
       }),

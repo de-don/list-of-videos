@@ -1,7 +1,10 @@
 /** Video initialization data */
 interface VideoData {
+  /** ID */
   id: string;
+  /** Title */
   title: string;
+  /** Image preview */
   previewImage?: string;
 }
 

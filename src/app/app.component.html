@@ -1,7 +1,5 @@
-<div class="app">
-  <nav
-    class="custom-tab-links"
-    mat-tab-nav-bar>
+<div class="app-container">
+  <nav mat-tab-nav-bar>
     <a
       mat-tab-link
       (click)="showAll()"
@@ -26,9 +24,12 @@
     </app-video-details>
   </div>
 
-  <div class="load-more">
+  <div
+    *ngIf="nextPageToken"
+    class="load-more">
     <button
       mat-flat-button
+      color="primary"
       type="button"
       (click)="loadMore()">
       Load more

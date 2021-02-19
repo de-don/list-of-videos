@@ -1,15 +1,17 @@
+@import '../../../styles.scss';
+
 :host {
   display: block;
 }
 
-.video {
+.video-card {
   display: flex;
-  width: 100%;
-  background: #e7e7e7;
+  background: mat-color($primary, 200);
 }
 
-.preview {
-  height: 200px;
+.video-preview {
+  height: 150px;
+  width: 200px;
 
   img {
     height: 100%;
@@ -18,7 +20,7 @@
 
 
 .content {
-  margin: 0 10px;
+  margin: 0 var(--space-s);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -31,7 +33,7 @@
     display: flex;
 
     button {
-      margin: 4px;
+      margin: var(--space-xs);
     }
   }
 }
