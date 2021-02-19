@@ -1,4 +1,21 @@
 <div class="app">
+  <nav
+    class="custom-tab-links"
+    mat-tab-nav-bar>
+    <a
+      mat-tab-link
+      (click)="showAll()"
+      [active]="!showFavorites">
+      All Videos
+    </a>
+    <a
+      mat-tab-link
+      (click)="showOnlyFavorites()"
+      [active]="showFavorites">
+      Favorites
+    </a>
+  </nav>
+
   <div class="videos-container">
     <app-video-details
       *ngFor="let video of videos$|async"

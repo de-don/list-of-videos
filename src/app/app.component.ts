@@ -19,9 +19,15 @@ import { PaginationData } from './models/pagination-data';
 export class AppComponent {
   public loadPage$ = new BehaviorSubject<string | undefined>(undefined);
   public paginationInfo: PaginationData | undefined;
+  public showFavorites = false;
 
   public videosPagedList$ = this.loadPage$.pipe(
-    switchMap(pageId => this.youtubeVideosService.getTopList(pageId || undefined)),
+    switchMap(pageId => {
+      if (this.showFavorites) {
+        return this.youtubeVideosService.getByIds([...this.favoriteIds], pageId);
+      }
+      return this.youtubeVideosService.getTopList(pageId);
+    }),
     tap((pagedList) => this.paginationInfo = pagedList.pagination),
     shareReplay(1),
   );
@@ -57,5 +63,15 @@ export class AppComponent {
 
   public loadMore(): void {
     this.loadPage$.next(this.paginationInfo?.nextPageToken);
+  }
+
+  public showAll(): void {
+    this.showFavorites = false;
+    this.loadPage$.next(undefined);
+  }
+
+  public showOnlyFavorites(): void {
+    this.showFavorites = true;
+    this.loadPage$.next(undefined);
   }
 }

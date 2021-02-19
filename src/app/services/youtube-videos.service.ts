@@ -50,4 +50,28 @@ export class YoutubeVideosService {
       }),
     );
   }
+
+  public getByIds(ids: string[], pageId?: string): Observable<PagedList<Video>> {
+    return this.httpClient.get<YoutubeVideosListDto>(this.url, {
+      params: {
+        key: environment.googleApiKey,
+        maxResults: '5',
+        id: ids.join(','),
+        part: 'id,contentDetails,snippet',
+        ...(pageId ? { pageToken: pageId} : {}),
+      },
+    }).pipe(
+      map(response => {
+        const items = response?.items.map(dto => this.youtubeVideoMapper.fromDto(dto));
+
+        return {
+          pagination: {
+            nextPageToken: response?.nextPageToken,
+            prevPageToken: response?.prevPageToken,
+          },
+          items,
+        };
+      }),
+    );
+  }
 }
