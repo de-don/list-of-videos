@@ -2,6 +2,11 @@
 
 List of the most popular Youtube videos with the function of saving your favorite videos
 
+You can open next links to test:
+
+* https://de-don.github.io/list-of-videos/
+* https://de-don.github.io/list-of-videos/index.html (if previous not working)
+
 ---
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.7.
