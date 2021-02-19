@@ -1,4 +1,23 @@
 <div class="app-container">
+  <mat-form-field
+    appearance="outline"
+    class="filter">
+    <mat-label>Filter results</mat-label>
+    <input
+      matInput
+      [formControl]="searchControl"
+      type="text">
+    <button
+      *ngIf="searchControl.value"
+      mat-button
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="searchControl.reset('')">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
   <nav mat-tab-nav-bar mat-stretch-tabs>
     <a
       mat-tab-link

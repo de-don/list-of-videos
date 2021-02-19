@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { BehaviorSubject, Observable, NEVER } from 'rxjs';
-import { scan, shareReplay, switchMap, tap, catchError } from 'rxjs/operators';
+import { scan, shareReplay, switchMap, tap, catchError, map } from 'rxjs/operators';
 
 import { PagedList } from './models/paged-list';
 import { Video } from './models/video';
@@ -8,6 +9,7 @@ import { AppConfigService } from './services/app-config.service';
 import { NotificationService } from './services/notification.service';
 import { StorageService } from './services/storage.service';
 import { YoutubeVideosService } from './services/youtube-videos.service';
+import { listenControlChanges } from './utils/listen-control-changes';
 import { onMessageOrFailed } from './utils/on-message-or-failed';
 
 interface LoadPageCommand {
@@ -82,13 +84,26 @@ export class AppComponent {
       }
       return [...videos, ...pagedList.items];
     }, []),
+    // Filter list of loaded videos by search query
+    switchMap(videos => listenControlChanges<string>(this.searchControl).pipe(
+      map(query => {
+        const queryLower = query.toLowerCase();
+        return videos.filter(video => {
+          return video.title.toLowerCase().includes(queryLower);
+        });
+      }),
+    )),
   );
+
+  /** Control to filter the results */
+  public searchControl = this.fb.control('');
 
   public constructor(
     private readonly youtubeVideosService: YoutubeVideosService,
     private readonly storageService: StorageService,
     private readonly appConfigService: AppConfigService,
     private readonly notificationService: NotificationService,
+    private readonly fb: FormBuilder,
   ) {
     // Load favorites from local store
     const storedFavorites = this.storageService.get<string[]>(this.appConfigService.favoritesStorageKey);
