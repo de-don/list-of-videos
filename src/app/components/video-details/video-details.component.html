@@ -1,24 +1,34 @@
 <mat-card class="video-card">
-  <div class="video-preview">
+  <mat-card-header>
+    <mat-card-subtitle>{{ video.title }}</mat-card-subtitle>
+  </mat-card-header>
+  <div
+    mat-card-image
+    class="image-container">
     <img
+      class="blurred"
+      [src]="video.previewImage"
+      [alt]="video.title">
+    <img
+      class="original"
       [src]="video.previewImage"
       [alt]="video.title">
   </div>
-  <div class="content">
-    <div class="title">{{ video.title }}</div>
 
-    <div class="actions">
-      <button
-        color="primary"
-        mat-flat-button>
-        <mat-icon>launch</mat-icon>
-      </button>
-      <button
-        mat-flat-button
-        color="accent"
-        (click)="toggleFavorite.emit(video)">
-        <mat-icon>{{ isFavorite? 'favorite' : 'favorite_border' }}</mat-icon>
-      </button>
-    </div>
-  </div>
+  <mat-card-actions class="actions">
+    <a
+      mat-flat-button
+      [href]="video.link"
+      target="_blank"
+      rel="nofollow noopener"
+      color="primary">
+      <mat-icon>launch</mat-icon>
+    </a>
+    <button
+      mat-flat-button
+      color="accent"
+      (click)="toggleFavorite.emit(video)">
+      <mat-icon>{{ isFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+    </button>
+  </mat-card-actions>
 </mat-card>

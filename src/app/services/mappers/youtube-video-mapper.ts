@@ -15,6 +15,7 @@ export class YoutubeVideoMapper implements MapperFromDTO<YoutubeVideoDto, Video>
       id: dto.id,
       title: dto.snippet.title,
       previewImage: dto.snippet.thumbnails.standard?.url,
+      link: 'https://www.youtube.com/watch?v=' + dto.id,
     });
   }
 }

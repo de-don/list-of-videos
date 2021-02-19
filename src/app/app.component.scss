@@ -13,6 +13,9 @@
 .videos-container {
   flex: auto;
   overflow: hidden auto;
+}
+
+.videos-container > * {
   margin: var(--space-m);
 }
 

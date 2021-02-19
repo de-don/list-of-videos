@@ -6,6 +6,8 @@ interface VideoData {
   title: string;
   /** Image preview */
   previewImage?: string;
+  /** Link to the video */
+  link: string;
 }
 
 /** Video model that contain all information about the video */
@@ -19,10 +21,14 @@ export class Video {
   /** Preview Image */
   public previewImage?: string;
 
+  /** Link to the video */
+  public link: string;
+
   /** Initialize video instance */
   public constructor(data: VideoData) {
     this.id = data.id;
     this.title = data.title;
     this.previewImage = data.previewImage;
+    this.link = data.link;
   }
 }

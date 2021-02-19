@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { scan, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, NEVER } from 'rxjs';
+import { scan, shareReplay, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { PagedList } from './models/paged-list';
 import { Video } from './models/video';
 import { AppConfigService } from './services/app-config.service';
+import { NotificationService } from './services/notification.service';
 import { StorageService } from './services/storage.service';
 import { YoutubeVideosService } from './services/youtube-videos.service';
+import { onMessageOrFailed } from './utils/on-message-or-failed';
 
 interface LoadPageCommand {
   pageToken: string | undefined;
@@ -30,8 +32,11 @@ export class AppComponent {
   /** Show favorites state */
   public showFavorites = false;
 
+  /** Loading state */
+  public isLoading = false;
+
   /** Page size */
-  private readonly pageSize = 3;
+  private readonly pageSize = 10;
 
   /** Subject with page token that need to load */
   private readonly loadPage$ = new BehaviorSubject<LoadPageCommand>({
@@ -40,13 +45,14 @@ export class AppComponent {
   });
 
   /** List ids of favorite videos */
-  private favoriteIds: Set<string> = new Set<string>();
+  private readonly favoriteIds: Set<string> = new Set<string>();
 
   /**
    * Paged list of Videos.
    * This stream contain information about latest loaded page with videos
    */
   public videosPagedList$: Observable<PagedList<Video>> = this.loadPage$.pipe(
+    tap(() => this.isLoading = true),
     switchMap(command => {
       if (command.onlyFavorites) {
         return this.youtubeVideosService.getByIds([...this.favoriteIds]);
@@ -54,6 +60,13 @@ export class AppComponent {
       return this.youtubeVideosService.getTopList(this.pageSize, command.pageToken);
     }),
     tap((pagedList) => this.nextPageToken = pagedList.nextPageToken),
+    onMessageOrFailed(() => this.isLoading = false),
+    catchError((err) => {
+      const message = err?.error?.error?.message;
+      const defaultMessage = 'Unknown error :(';
+      this.notificationService.showMessage(message ?? defaultMessage);
+      return NEVER;
+    }),
     shareReplay(1),
   );
 
@@ -75,10 +88,16 @@ export class AppComponent {
     private readonly youtubeVideosService: YoutubeVideosService,
     private readonly storageService: StorageService,
     private readonly appConfigService: AppConfigService,
+    private readonly notificationService: NotificationService,
   ) {
     // Load favorites from local store
     const storedFavorites = this.storageService.get<string[]>(this.appConfigService.favoritesStorageKey);
     this.favoriteIds = new Set(storedFavorites ?? []);
+  }
+
+  /** Count of favorites */
+  public get favoritesCount(): number {
+    return this.favoriteIds.size;
   }
 
   /** Check that video is favorite */

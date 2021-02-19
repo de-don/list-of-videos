@@ -1,5 +1,5 @@
 <div class="app-container">
-  <nav mat-tab-nav-bar>
+  <nav mat-tab-nav-bar mat-stretch-tabs>
     <a
       mat-tab-link
       (click)="showAll()"
@@ -11,6 +11,7 @@
       (click)="showOnlyFavorites()"
       [active]="showFavorites">
       Favorites
+      ({{ favoritesCount }})
     </a>
   </nav>
 
@@ -29,6 +30,7 @@
     class="load-more">
     <button
       mat-flat-button
+      [disabled]="isLoading"
       color="primary"
       type="button"
       (click)="loadMore()">

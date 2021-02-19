@@ -5,35 +5,34 @@
 }
 
 .video-card {
-  display: flex;
   background: mat-color($primary, 200);
 }
 
-.video-preview {
-  height: 150px;
-  width: 200px;
+.image-container {
+  position: relative;
+  overflow: hidden;
+  height: 200px;
 
   img {
+    width: 100%;
     height: 100%;
+  }
+
+  .original {
+    position: absolute;
+    object-fit: contain;
+    top: 0;
+    left: 0;
+  }
+
+  .blurred {
+    object-fit: cover;
+    filter: blur(4px);
   }
 }
 
-
-.content {
-  margin: 0 var(--space-s);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  .title {
-    font-size: 1.2em;
-  }
-
-  .actions {
-    display: flex;
-
-    button {
-      margin: var(--space-xs);
-    }
+.actions {
+  * + * {
+    margin-left: var(--space-m);
   }
 }
