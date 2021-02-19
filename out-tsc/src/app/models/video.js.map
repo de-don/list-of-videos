@@ -1,0 +1,1 @@
+{"version":3,"file":"video.js","sourceRoot":"","sources":["../../../../../src/app/models/video.ts"],"names":[],"mappings":"AAOA,+DAA+D;AAC/D,MAAM,OAAO,KAAK;IAUhB,gCAAgC;IAChC,YAAmB,IAAe;QAChC,IAAI,CAAC,EAAE,GAAG,IAAI,CAAC,EAAE,CAAC;QAClB,IAAI,CAAC,KAAK,GAAG,IAAI,CAAC,KAAK,CAAC;QACxB,IAAI,CAAC,YAAY,GAAG,IAAI,CAAC,YAAY,CAAC;IACxC,CAAC;CACF"}
