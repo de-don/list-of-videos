@@ -1,0 +1,38 @@
+@import '../../../styles.scss';
+
+:host {
+  display: block;
+}
+
+.video-card {
+  background: mat-color($primary, 200);
+}
+
+.image-container {
+  position: relative;
+  overflow: hidden;
+  height: 200px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .original {
+    position: absolute;
+    object-fit: contain;
+    top: 0;
+    left: 0;
+  }
+
+  .blurred {
+    object-fit: cover;
+    filter: blur(4px);
+  }
+}
+
+.actions {
+  * + * {
+    margin-left: var(--space-m);
+  }
+}
