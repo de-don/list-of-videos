@@ -6,8 +6,19 @@
       [src]="video.previewImage"
       [alt]="video.title">
   </div>
-  <div>
-    <div>{{ video.title }}</div>
+  <div class="content">
+    <div class="title">{{ video.title }}</div>
+
+    <div class="actions">
+      <button mat-flat-button>
+        <mat-icon>launch</mat-icon>
+      </button>
+      <button
+        mat-flat-button
+        (click)="toggleFavorite.emit(video)">
+        <mat-icon>{{ isFavorite ? 'favorite_border' : 'favorite' }}</mat-icon>
+      </button>
+    </div>
   </div>
 </mat-card>
 

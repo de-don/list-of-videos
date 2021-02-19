@@ -10,7 +10,7 @@ export class YoutubeVideoMapper {
     return new Video({
       id: dto.id,
       title: dto.snippet.title,
-      previewImage: dto.snippet.thumbnails.maxres.url,
+      previewImage: dto.snippet.thumbnails.standard?.url,
     });
   }
 }

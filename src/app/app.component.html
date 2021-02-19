@@ -1,4 +1,20 @@
-<div>
-  <app-videos-list [videos]="videos$|async">
-  </app-videos-list>
+<div class="app">
+  <div class="videos-container">
+    <app-video-details
+      *ngFor="let video of videos$|async"
+      class="video-details"
+      [video]="video"
+      [isFavorite]="isFavorite(video)"
+      (toggleFavorite)="toggleFavorite($event)">
+    </app-video-details>
+  </div>
+
+  <div class="load-more">
+    <button
+      mat-flat-button
+      type="button"
+      (click)="loadMore()">
+      Load more
+    </button>
+  </div>
 </div>

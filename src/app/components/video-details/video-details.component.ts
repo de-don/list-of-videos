@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Video } from 'src/app/models/video';
 
 @Component({
@@ -9,4 +9,10 @@ import { Video } from 'src/app/models/video';
 export class VideoDetailsComponent {
   @Input()
   public video?: Video;
+
+  @Input()
+  public isFavorite = false;
+
+  @Output()
+  public toggleFavorite = new EventEmitter<Video>();
 }

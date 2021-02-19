@@ -1,14 +1,37 @@
+:host {
+  display: block;
+}
+
 .video {
   display: flex;
   width: 100%;
   background: #e7e7e7;
 }
 
-
 .preview {
   height: 200px;
 
   img {
     height: 100%;
+  }
+}
+
+
+.content {
+  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .title {
+    font-size: 1.2em;
+  }
+
+  .actions {
+    display: flex;
+
+    button {
+      margin: 4px;
+    }
   }
 }

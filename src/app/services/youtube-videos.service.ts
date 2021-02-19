@@ -6,9 +6,12 @@ import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 import { YoutubeVideoMapper } from './mappers/youtube-video-mapper';
 import { YoutubeVideoDto } from './mappers/dtos/youtube-video.dto';
+import { PagedList } from '../models/paged-list';
 
 interface YoutubeVideosListDto {
   items: YoutubeVideoDto[];
+  nextPageToken?: string;
+  prevPageToken?: string;
 }
 
 /** Service to work with Youtube videos */
@@ -24,16 +27,27 @@ export class YoutubeVideosService {
   ) {
   }
 
-  public getTopList(): Observable<Video[]> {
+  public getTopList(pageId?: string): Observable<PagedList<Video>> {
     return this.httpClient.get<YoutubeVideosListDto>(this.url, {
       params: {
         key: environment.googleApiKey,
         maxResults: '5',
         chart: 'mostPopular',
         part: 'id,contentDetails,snippet',
+        ...(pageId ? { pageToken: pageId} : {}),
       },
     }).pipe(
-      map(response => response.items.map(dto => this.youtubeVideoMapper.fromDto(dto))),
+      map(response => {
+        const items = response?.items.map(dto => this.youtubeVideoMapper.fromDto(dto));
+
+        return {
+          pagination: {
+            nextPageToken: response?.nextPageToken,
+            prevPageToken: response?.prevPageToken,
+          },
+          items,
+        };
+      }),
     );
   }
 }

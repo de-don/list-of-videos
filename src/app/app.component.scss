@@ -1,0 +1,22 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.videos-container {
+  max-width: 600px;
+  height: 800px;
+  overflow: hidden auto;
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.video-details + .video-details {
+  margin-top: 20px;
+}

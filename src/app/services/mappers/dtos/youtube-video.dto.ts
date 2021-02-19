@@ -11,11 +11,11 @@ export interface YoutubeVideoDto {
     title: string;
     description: string;
     thumbnails: {
-      default: YoutubeVideoThumbnail,
-      medium: YoutubeVideoThumbnail,
-      high: YoutubeVideoThumbnail,
-      standard: YoutubeVideoThumbnail,
-      maxres: YoutubeVideoThumbnail,
+      default?: YoutubeVideoThumbnail,
+      medium?: YoutubeVideoThumbnail,
+      high?: YoutubeVideoThumbnail,
+      standard?: YoutubeVideoThumbnail,
+      maxres?: YoutubeVideoThumbnail,
     }
   };
 }
