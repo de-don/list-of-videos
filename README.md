@@ -2,10 +2,8 @@
 
 List of the most popular Youtube videos with the function of saving your favorite videos
 
-You can open next links to test:
-
-* https://de-don.github.io/list-of-videos/
-* https://de-don.github.io/list-of-videos/index.html (if previous not working)
+You can open next links to test it
+### https://de-don.github.io/list-of-videos/
 
 ---
 
