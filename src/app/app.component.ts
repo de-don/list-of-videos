@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { YoutubeVideosService } from './services/youtube-videos.service';
-import { scan, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { Video } from './models/video';
+import { scan, shareReplay, switchMap, tap } from 'rxjs/operators';
+
 import { PagedList } from './models/paged-list';
 import { PaginationData } from './models/pagination-data';
+import { Video } from './models/video';
+import { AppConfigService } from './services/app-config.service';
+import { StorageService } from './services/storage.service';
+import { YoutubeVideosService } from './services/youtube-videos.service';
 
 /**
  * App Component
@@ -46,7 +49,11 @@ export class AppComponent {
 
   constructor(
     private readonly youtubeVideosService: YoutubeVideosService,
+    private readonly storageService: StorageService,
+    private readonly appConfigService: AppConfigService,
   ) {
+    const storedFavorites = this.storageService.get<string[]>(this.appConfigService.favoritesStorageKey);
+    this.favoriteIds = new Set(storedFavorites ?? []);
   }
 
   public isFavorite(video: Video): boolean {
@@ -59,6 +66,10 @@ export class AppComponent {
       return;
     }
     this.favoriteIds.add(video.id);
+    this.storageService.set(
+      this.appConfigService.favoritesStorageKey,
+      [...this.favoriteIds],
+    );
   }
 
   public loadMore(): void {
